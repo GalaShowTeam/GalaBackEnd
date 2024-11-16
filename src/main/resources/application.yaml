@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: gala
+  profiles:
+    include: database
+server:
+  port: 8080

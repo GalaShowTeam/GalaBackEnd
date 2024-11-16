@@ -5,12 +5,13 @@ import jakarta.persistence.*
 import java.time.Instant
 
 @Entity
-@Table(name = "gala_user")
+@Table(name = "gala_user", schema = "gala")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 abstract class GalaUser (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    open val userNo: Long,
+    open val userNo: Long = 0,
 
     @Column(length = 40)
     open val userEmail : String,
@@ -31,6 +32,7 @@ abstract class GalaUser (
 
     open var points : Long = 0,
 
+    @Column(insertable = false, updatable = false)
     open val role : String = "002"
 
 
@@ -41,13 +43,12 @@ abstract class GalaUser (
 }
 
 @Entity
+@DiscriminatorValue("001")
 class AdminUser (
-    userNo : Long,
     userEmail : String,
     provider : String,
     userNickname : String,
 ) : GalaUser(
-    userNo = userNo,
     userEmail = userEmail,
     provider = provider,
     userNickname = userNickname,
@@ -55,13 +56,13 @@ class AdminUser (
 ){}
 
 @Entity
+
+@DiscriminatorValue("002")
 class BaseUser (
-    userNo : Long,
     userEmail : String,
     provider : String,
     userNickname : String,
 ) : GalaUser(
-    userNo = userNo,
     userEmail = userEmail,
     provider = provider,
     userNickname = userNickname

@@ -7,7 +7,7 @@ import jakarta.persistence.Column
 import java.time.Instant
 
 class GalaUserDTO(
-    val userNo: Long,
+    val userNo: Long?,
 
     val userEmail : String,
 

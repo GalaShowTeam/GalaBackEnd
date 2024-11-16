@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository
 interface GalaUserRepository : JpaRepository<GalaUser, Long> {
 
     fun findByUserNo(userNo: Long): GalaUser?
+
+    fun findByUserEmail(email: String): GalaUser?
 }

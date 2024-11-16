@@ -11,7 +11,7 @@ class GalaUserController {
 
     @RequestMapping("/get")
     fun getUser(): ResponseEntity<String> {
-        return ResponseEntity.ok("Hello World")
+        return ResponseEntity.ok("New Project")
     }
 
 }

@@ -18,7 +18,7 @@ abstract class GalaUser (
 
     open val provider : String,
 
-    open var userNickname : String,
+    open var userNickname : String = "",
 
     open var profileImg : String = "",
 
@@ -33,7 +33,9 @@ abstract class GalaUser (
     open var points : Long = 0,
 
     @Column(insertable = false, updatable = false)
-    open val role : String = "002"
+    open val role : String = "002",
+
+    open val providerId : String
 
 
 ){
@@ -47,12 +49,12 @@ abstract class GalaUser (
 class AdminUser (
     userEmail : String,
     provider : String,
-    userNickname : String,
+    providerId : String,
 ) : GalaUser(
     userEmail = userEmail,
     provider = provider,
-    userNickname = userNickname,
-    role = "001"
+    role = "001",
+    providerId = providerId
 ){}
 
 @Entity
@@ -61,10 +63,10 @@ class AdminUser (
 class BaseUser (
     userEmail : String,
     provider : String,
-    userNickname : String,
+    providerId : String
 ) : GalaUser(
     userEmail = userEmail,
     provider = provider,
-    userNickname = userNickname
-    , role = "002"
+     role = "002"
+    ,providerId = providerId
 ){}

@@ -10,4 +10,6 @@ interface GalaUserRepository : JpaRepository<GalaUser, Long> {
     fun findByUserNo(userNo: Long): GalaUser?
 
     fun findByUserEmail(email: String): GalaUser?
+
+    fun findByProviderId(providerId: String): GalaUser?
 }

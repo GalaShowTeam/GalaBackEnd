@@ -31,11 +31,11 @@ class SecurityConfig {
 
 
         httpSecurity.authorizeHttpRequests{authorize -> authorize
-            .requestMatchers("/login/oauth2/code/google").permitAll()
+            .requestMatchers("/login/oauth2/code/**").permitAll()
             .anyRequest().authenticated()
         }
-            .oauth2Login {
-                it -> it.defaultSuccessUrl("/api/login/success",false)
+            .oauth2Login { oauth2 -> oauth2
+                                            .defaultSuccessUrl("/user/get")
             }
 
         return httpSecurity.build()

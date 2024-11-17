@@ -25,7 +25,7 @@ class MemberDetails(
     }
 
     override fun getUsername(): String {
-        return galaUser.userNickname
+        return galaUser.userEmail
     }
 
 }

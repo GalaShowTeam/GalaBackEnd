@@ -2,6 +2,6 @@ spring:
   application:
     name: gala
   profiles:
-    include: database, oauth2
+    include: database, oauth2, jwt
 server:
   port: 8080

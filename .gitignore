@@ -70,3 +70,6 @@ out/
 
 ### oauth2-Token ###
 **/*-oauth2.*
+
+### jwt ###
+**/*-jwt.*

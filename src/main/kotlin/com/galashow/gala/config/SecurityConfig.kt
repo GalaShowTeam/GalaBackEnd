@@ -39,6 +39,7 @@ class SecurityConfig {
         }
             .oauth2Login { oauth2 -> oauth2
                 .userInfoEndpoint { userInfo -> userInfo.userService(oauth2UserService) }
+                //TODO : 소셜 로그인 성공 or 실패 시 핸들러를 작성해야 한다.
             }
 
         return httpSecurity.build()

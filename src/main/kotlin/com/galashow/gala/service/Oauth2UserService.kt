@@ -1,13 +1,10 @@
 package com.galashow.gala.service
 
-import com.galashow.gala.jwt.JwtUtil
 import com.galashow.gala.model.BaseUser
-import com.galashow.gala.model.GalaUser
 import com.galashow.gala.repository.GalaUserRepository
 import com.galashow.gala.security.MemberDetails
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService

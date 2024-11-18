@@ -1,5 +1,6 @@
 package com.galashow.gala.config
 
+import com.galashow.gala.oauth.Oauth2LoginSuccessHandler
 import com.galashow.gala.service.Oauth2UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -20,7 +21,8 @@ class SecurityConfig {
 
     @Bean
     fun securityFilterChain(httpSecurity: HttpSecurity,
-                            oauth2UserService: Oauth2UserService): SecurityFilterChain {
+                            oauth2UserService: Oauth2UserService,
+                            successHandler: Oauth2LoginSuccessHandler): SecurityFilterChain {
         // 폼 기반 로그인 비활성화
         httpSecurity.formLogin { it -> it.disable() }
         // HTTP 기본 인증 비활성화
@@ -40,6 +42,7 @@ class SecurityConfig {
             .oauth2Login { oauth2 -> oauth2
                 .userInfoEndpoint { userInfo -> userInfo.userService(oauth2UserService) }
                 //TODO : 소셜 로그인 성공 or 실패 시 핸들러를 작성해야 한다.
+                .successHandler(successHandler)
             }
 
         return httpSecurity.build()

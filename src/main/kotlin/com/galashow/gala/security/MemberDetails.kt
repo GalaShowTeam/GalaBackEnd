@@ -8,12 +8,13 @@ import org.springframework.security.oauth2.core.user.OAuth2User
 class MemberDetails(
     private val galaUser: GalaUser
 ) : UserDetails ,OAuth2User{
+
     override fun getName(): String {
         return galaUser.userEmail
     }
 
     override fun getAttributes(): MutableMap<String, Any> {
-        return mutableMapOf("role" to galaUser.role, "email" to galaUser.userEmail)
+        return mutableMapOf("role" to galaUser.role, "email" to galaUser.userEmail,"providerId" to galaUser.providerId)
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
@@ -21,11 +22,19 @@ class MemberDetails(
     }
 
     override fun getPassword(): String {
-        return ""
+        throw UnsupportedOperationException("Oauth2 로그인에서 비밀번호는 저장하고 있지 않습니다.")
     }
 
     override fun getUsername(): String {
         return galaUser.userEmail
+    }
+
+    fun getProviderId():String{
+        return galaUser.providerId
+    }
+
+    fun getGalaUser(): GalaUser{
+        return galaUser
     }
 
 }

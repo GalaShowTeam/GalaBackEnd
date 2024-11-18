@@ -18,7 +18,8 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 
     /* 유저 못 찾는 에러*/
     @ExceptionHandler(NoUserException::class)
-    fun handleNoUserException(e: NoUserException): ResponseEntity<String> {
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.message)
+    fun handleNoUserException(e: NoUserException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(ErrorCode.SERVER_ERROR, message = e.message ?: "사용자를 찾을 수 없습니다.")
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse)
     }
 }

@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service
 class MemberDetailsService(
     private val galaUserRepository: GalaUserRepository
 ) : UserDetailsService{
-    override fun loadUserByUsername(email: String?): UserDetails {
-        if(email.isNullOrEmpty()){
-            throw IllegalArgumentException("Email cannot be empty")
+    override fun loadUserByUsername(providerId: String?): UserDetails {
+        if(providerId.isNullOrEmpty()){
+            throw IllegalArgumentException("providerId cannot be empty")
         }
-        val user = galaUserRepository.findByUserEmail(email) ?: throw NoUserException()
+        val user = galaUserRepository.findByProviderId(providerId) ?: throw NoUserException()
 
         return MemberDetails(user)
     }

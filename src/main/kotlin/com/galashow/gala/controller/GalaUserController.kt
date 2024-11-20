@@ -28,6 +28,7 @@ class GalaUserController {
         return if(loginUser.getUserNo() == userNo){
             ResponseEntity.ok(GalaUserDTO.toDto(loginUser.getGalaUser()))
         }else{
+            //TODO : util 에 JSON 만드는 코드 짜기
             ResponseEntity.status(HttpStatus.FORBIDDEN).body("접근 권한이 없습니다.")
         }
     }

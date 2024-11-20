@@ -1,10 +1,8 @@
 package com.galashow.gala.model.dto
 
-import com.galashow.gala.model.AdminUser
-import com.galashow.gala.model.BaseUser
-import com.galashow.gala.model.GalaUser
-import jakarta.persistence.Column
-import java.time.Instant
+import com.galashow.gala.model.entity.AdminUser
+import com.galashow.gala.model.entity.BaseUser
+import com.galashow.gala.model.entity.GalaUser
 
 class GalaUserDTO(
     val userNo: Long?,

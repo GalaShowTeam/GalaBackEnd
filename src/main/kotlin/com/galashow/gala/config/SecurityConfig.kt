@@ -1,13 +1,20 @@
 package com.galashow.gala.config
 
+import com.galashow.gala.jwt.filter.JwtRequestFilter
+import com.galashow.gala.oauth.Oauth2LoginFailureHandler
 import com.galashow.gala.oauth.Oauth2LoginSuccessHandler
-import com.galashow.gala.service.Oauth2UserService
+import com.galashow.gala.oauth.service.Oauth2UserService
+import com.galashow.gala.security.CustomAccessDeniedHandler
+import com.galashow.gala.security.CustomAuthenticationEntryPoint
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
 class SecurityConfig {
@@ -20,9 +27,13 @@ class SecurityConfig {
     @Bean
     fun securityFilterChain(httpSecurity: HttpSecurity,
                             oauth2UserService: Oauth2UserService,
-                            successHandler: Oauth2LoginSuccessHandler): SecurityFilterChain {
+                            successHandler: Oauth2LoginSuccessHandler,
+                            failureHandler: Oauth2LoginFailureHandler,
+                            jwtRequestFilter: JwtRequestFilter,
+                            customAuthenticationEntryPoint: CustomAuthenticationEntryPoint,
+                            customAccessDeniedHandler: CustomAccessDeniedHandler): SecurityFilterChain {
         // 폼 기반 로그인 비활성화
-        httpSecurity.formLogin { it -> it.disable() }
+        httpSecurity.formLogin { it -> it.loginPage("/login").permitAll() }
         // HTTP 기본 인증 비활성화
         httpSecurity.httpBasic { it -> it.disable() }
 
@@ -30,19 +41,28 @@ class SecurityConfig {
         httpSecurity.csrf { it -> it.disable() }
 
         // 세션 이용 안함
-        httpSecurity.sessionManagement { it -> it.disable() }
+        httpSecurity.sessionManagement { it -> it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
 
 
         httpSecurity.authorizeHttpRequests{authorize -> authorize
             .requestMatchers("/login/oauth2/code/**").permitAll()
+            .requestMatchers("/favicon.ico").permitAll()
+            .requestMatchers(HttpMethod.GET,"/user/get").hasAnyAuthority("001","002")
+            .requestMatchers("/login").permitAll()
             .anyRequest().authenticated()
         }
             .oauth2Login { oauth2 -> oauth2
                 .userInfoEndpoint { userInfo -> userInfo.userService(oauth2UserService) }
-                //TODO : 소셜 로그인 성공 or 실패 시 핸들러를 작성해야 한다.
                 .successHandler(successHandler)
+                .failureHandler(failureHandler)
+            }
+            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .exceptionHandling { except ->
+                except.authenticationEntryPoint(customAuthenticationEntryPoint)
+                except.accessDeniedHandler(customAccessDeniedHandler)
             }
 
+        
         return httpSecurity.build()
     }
 

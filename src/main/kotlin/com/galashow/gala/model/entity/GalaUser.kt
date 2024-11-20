@@ -1,6 +1,5 @@
-package com.galashow.gala.model
+package com.galashow.gala.model.entity
 
-import ch.qos.logback.core.status.InfoStatus
 import jakarta.persistence.*
 import java.time.Instant
 

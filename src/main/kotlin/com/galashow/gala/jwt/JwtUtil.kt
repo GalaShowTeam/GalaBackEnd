@@ -1,6 +1,6 @@
 package com.galashow.gala.jwt
 
-import com.galashow.gala.model.GalaUser
+import com.galashow.gala.model.entity.GalaUser
 import com.galashow.gala.security.MemberDetailsService
 import io.jsonwebtoken.*
 import org.springframework.beans.factory.annotation.Value

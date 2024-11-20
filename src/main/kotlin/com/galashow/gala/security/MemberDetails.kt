@@ -1,6 +1,6 @@
 package com.galashow.gala.security
 
-import com.galashow.gala.model.GalaUser
+import com.galashow.gala.model.entity.GalaUser
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.oauth2.core.user.OAuth2User
@@ -21,8 +21,8 @@ class MemberDetails(
         return mutableListOf(GrantedAuthority { galaUser.role })
     }
 
-    override fun getPassword(): String {
-        throw UnsupportedOperationException("Oauth2 로그인에서 비밀번호는 저장하고 있지 않습니다.")
+    override fun getPassword(): String? {
+        return null
     }
 
     override fun getUsername(): String {
@@ -33,8 +33,12 @@ class MemberDetails(
         return galaUser.providerId
     }
 
-    fun getGalaUser(): GalaUser{
+    fun getGalaUser(): GalaUser {
         return galaUser
+    }
+
+    fun getUserNo() : Long{
+        return galaUser.userNo
     }
 
 }

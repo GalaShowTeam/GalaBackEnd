@@ -1,7 +1,9 @@
 package com.galashow.gala.oauth
 
 import com.galashow.gala.jwt.JwtUtil
-import com.galashow.gala.model.GalaUser
+import com.galashow.gala.model.entity.CertList
+import com.galashow.gala.model.entity.GalaUser
+import com.galashow.gala.repository.CertListRepository
 import com.galashow.gala.security.MemberDetails
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -11,10 +13,13 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.stereotype.Component
+import com.galashow.gala.util.Util
+import net.minidev.json.JSONObject
 
 @Component
 class Oauth2LoginSuccessHandler(
     private val jwtUtil: JwtUtil,
+    private val certListRepository: CertListRepository
 ) : SimpleUrlAuthenticationSuccessHandler() {
 
     private val logger : Logger = LoggerFactory.getLogger(Oauth2LoginSuccessHandler::class.java)
@@ -35,7 +40,29 @@ class Oauth2LoginSuccessHandler(
         logger.info(accessToken)
 
         val tokenMember = jwtUtil.getAuthentication(accessToken).principal as MemberDetails
-        
-        //TODO : Oauth2LoginFailHandler 작성
+
+        logger.info("로그인 성공 인증 저장")
+
+
+        val certList  =  CertList(
+            userNo = galaUser,
+            deviceInfoCd = Util.extractDeviceInfo(request!!),
+            ipAddress = request.remoteAddr,
+            accessStatusCd = "001"
+        )
+        certListRepository.save(certList)
+        //TODO : response 객체 작성 필요
+
+        response!!.status = HttpServletResponse.SC_OK
+        response.contentType="application/json"
+        response.characterEncoding="UTF8"
+
+        val errorResponse = mapOf(
+            "SUCCESS" to "성공",
+            "MSG" to "로그인 성공했습니다.",
+            "ACCESS_TOKEN" to accessToken,
+        )
+
+        response.writer.write(JSONObject.toJSONString(errorResponse))
     }
 }

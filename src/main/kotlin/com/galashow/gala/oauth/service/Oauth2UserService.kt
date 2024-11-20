@@ -1,6 +1,6 @@
-package com.galashow.gala.service
+package com.galashow.gala.oauth.service
 
-import com.galashow.gala.model.BaseUser
+import com.galashow.gala.model.entity.BaseUser
 import com.galashow.gala.repository.GalaUserRepository
 import com.galashow.gala.security.MemberDetails
 import org.slf4j.Logger

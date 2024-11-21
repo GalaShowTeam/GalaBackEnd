@@ -45,18 +45,20 @@ class SecurityConfig {
 
 
         httpSecurity.authorizeHttpRequests{authorize -> authorize
-            .requestMatchers("/login/oauth2/code/**").permitAll()
-            .requestMatchers("/favicon.ico").permitAll()
+            .requestMatchers("/login/oauth2/**").permitAll()
             .requestMatchers(HttpMethod.GET,"/user/get").hasAnyAuthority("001","002")
             .requestMatchers("/login").permitAll()
+            .requestMatchers("/favicon.ico").permitAll()
             .anyRequest().authenticated()
+
         }
+            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
             .oauth2Login { oauth2 -> oauth2
                 .userInfoEndpoint { userInfo -> userInfo.userService(oauth2UserService) }
                 .successHandler(successHandler)
                 .failureHandler(failureHandler)
             }
-            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
+
             .exceptionHandling { except ->
                 except.authenticationEntryPoint(customAuthenticationEntryPoint)
                 except.accessDeniedHandler(customAccessDeniedHandler)

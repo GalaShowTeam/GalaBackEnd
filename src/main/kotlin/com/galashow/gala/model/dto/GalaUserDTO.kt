@@ -4,7 +4,7 @@ import com.galashow.gala.model.entity.AdminUser
 import com.galashow.gala.model.entity.BaseUser
 import com.galashow.gala.model.entity.GalaUser
 
-class GalaUserDTO(
+data class GalaUserDTO(
     val userNo: Long?,
 
     val userEmail : String,
@@ -20,9 +20,9 @@ class GalaUserDTO(
     companion object {
         fun toDto(entity : GalaUser) : GalaUserDTO{
             val type = when(entity){
-                is AdminUser -> "001"
-                is BaseUser -> "002"
-                else -> "003"
+                is AdminUser -> "ADM"
+                is BaseUser -> "USR"
+                else -> "UNK"
             }
             return GalaUserDTO(userNo = entity.userNo,
                                 userEmail = entity.userEmail,

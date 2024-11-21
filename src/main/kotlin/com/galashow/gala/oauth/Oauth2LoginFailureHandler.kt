@@ -5,7 +5,6 @@ import com.galashow.gala.repository.CertListRepository
 import com.galashow.gala.util.Util
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import net.minidev.json.JSONObject
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.AuthenticationException
@@ -32,7 +31,7 @@ class Oauth2LoginFailureHandler(
             deviceInfoCd = Util.extractDeviceInfo(request!!),
             ipAddress = request.remoteAddr,
             failReasonCd = Util.extractFailReason(exception!!),
-            accessStatusCd = "002"
+            accessStatusCd = "FAL"
         )
 
         certListRepository.save(certList)
@@ -41,11 +40,8 @@ class Oauth2LoginFailureHandler(
         response.contentType="application/json"
         response.characterEncoding="UTF8"
 
-        val errorResponse = mapOf(
-            "ERROR" to "FORBIDDEN",
-            "MSG" to "로그인 실패했습니다."
-        )
+        val responseJson = Util.createResponse("FORBIDDEN","로그인에 실패했습니다.")
 
-        response.writer.write(JSONObject.toJSONString(errorResponse))
+        response.writer.write(responseJson.toJSONString())
     }
 }

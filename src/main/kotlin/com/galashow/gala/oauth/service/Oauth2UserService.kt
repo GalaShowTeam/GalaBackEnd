@@ -29,23 +29,23 @@ class Oauth2UserService(
         when(provider){
             "google" -> {
                 logger.info("구글 로그인")
-                providerCd = "001"
+                providerCd = "GOO"
                 email = attributes["email"] as String
                 providerId = attributes["sub"] as String
             }
             "kakao" -> {
                 logger.info("카카오 로그인")
-                providerCd = "002"
+                providerCd = "KKO"
                 val kakaoAcount = attributes["kakao_account"] as? Map<String,Any>
                 email = kakaoAcount?.get("email") as String
                 providerId = attributes["id"].toString()
             }
             "naver" -> {
                 logger.info("네이버 로그인")
-                providerCd = "003"
-                val response = attributes["response"] as? Map<String,Any>
+                providerCd = "NAV"
+                val response = attributes["response"] as? Map<*, *>
                 email = response?.get("email") as String
-                providerId = response?.get("id") as String
+                providerId = response["id"] as String
             }
         }
 

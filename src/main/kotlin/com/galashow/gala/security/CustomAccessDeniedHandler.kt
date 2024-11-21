@@ -1,6 +1,7 @@
 package com.galashow.gala.security
 
 import com.fasterxml.jackson.module.kotlin.jsonMapper
+import com.galashow.gala.util.Util
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import net.minidev.json.JSONObject
@@ -20,12 +21,10 @@ class CustomAccessDeniedHandler : AccessDeniedHandler{
         response.contentType = "application/json"
         response.characterEncoding = "UTF-8"
 
-        val errorResponse = mapOf(
-            "ERROR" to "FORBIDDEN",
-            "MSG" to "권한이 없습니다."
-        )
+        val responseJson = Util.createResponse("FORBIDDEN","권한이 없습니다.")
 
-        response.writer.write(JSONObject.toJSONString(errorResponse))
+
+        response.writer.write(responseJson.toJSONString())
     }
 
 }

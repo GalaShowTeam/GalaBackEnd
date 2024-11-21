@@ -3,5 +3,8 @@ spring:
     name: gala
   profiles:
     include: database, oauth2, jwt
+  jackson:
+    time-zone: Asia/Seoul
 server:
   port: 8080
+

@@ -48,21 +48,21 @@ class Oauth2LoginSuccessHandler(
             userNo = galaUser,
             deviceInfoCd = Util.extractDeviceInfo(request!!),
             ipAddress = request.remoteAddr,
-            accessStatusCd = "001"
+            accessStatusCd = "SUC"
         )
         certListRepository.save(certList)
-        //TODO : response 객체 작성 필요
 
         response!!.status = HttpServletResponse.SC_OK
         response.contentType="application/json"
         response.characterEncoding="UTF8"
 
-        val errorResponse = mapOf(
-            "SUCCESS" to "성공",
-            "MSG" to "로그인 성공했습니다.",
-            "ACCESS_TOKEN" to accessToken,
-        )
+        val responseJson = Util.createResponse("SUCCESS","로그인에 성공했습니다.")
 
-        response.writer.write(JSONObject.toJSONString(errorResponse))
+        responseJson["ACCESS_TOKEN"] = accessToken
+
+
+        response.writer.write(responseJson.toJSONString())
+
+        clearAuthenticationAttributes(request)
     }
 }

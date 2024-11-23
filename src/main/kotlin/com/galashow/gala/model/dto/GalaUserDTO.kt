@@ -15,7 +15,7 @@ data class GalaUserDTO(
 
     var points : Long = 0,
 
-    val role : String = "002"
+    val role : String = "USR"
 ) {
     companion object {
         fun toDto(entity : GalaUser) : GalaUserDTO{

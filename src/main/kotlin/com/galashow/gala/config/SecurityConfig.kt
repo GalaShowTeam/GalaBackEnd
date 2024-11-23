@@ -46,7 +46,7 @@ class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests{authorize -> authorize
             .requestMatchers("/login/oauth2/**").permitAll()
-            .requestMatchers(HttpMethod.GET,"/user/get").hasAnyAuthority("001","002")
+            .requestMatchers(HttpMethod.GET,"/user/get").hasAnyAuthority("ADM","USR")
             .requestMatchers("/login").permitAll()
             .requestMatchers("/favicon.ico").permitAll()
             .anyRequest().authenticated()

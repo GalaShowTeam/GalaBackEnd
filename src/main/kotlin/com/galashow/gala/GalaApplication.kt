@@ -9,5 +9,5 @@ class GalaApplication
 
 fun main(args: Array<String>) {
 	runApplication<GalaApplication>(*args)
-
+	//TODO : 엔터티 생성과 더미 데이터 만들기
 }

@@ -64,7 +64,7 @@ abstract class GalaUser (
 }
 
 @Entity
-@DiscriminatorValue("001")
+@DiscriminatorValue("ADM")
 class AdminUser (
     userEmail : String,
     provider : String,
@@ -78,7 +78,7 @@ class AdminUser (
 
 @Entity
 
-@DiscriminatorValue("002")
+@DiscriminatorValue("USR")
 class BaseUser (
     userEmail : String,
     provider : String,

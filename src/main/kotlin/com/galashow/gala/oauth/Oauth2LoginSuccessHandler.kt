@@ -59,8 +59,7 @@ class Oauth2LoginSuccessHandler(
         val responseJson = Util.createResponse("SUCCESS","로그인에 성공했습니다.")
 
         responseJson["ACCESS_TOKEN"] = accessToken
-
-
+        response.addHeader("ACCESS_TOKEN",accessToken)
         response.writer.write(responseJson.toJSONString())
 
         clearAuthenticationAttributes(request)

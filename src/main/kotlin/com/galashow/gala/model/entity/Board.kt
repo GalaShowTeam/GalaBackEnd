@@ -19,7 +19,7 @@ class Board(
     @Size(max = 50)
     @NotNull
     @Column(name = "board_title", nullable = false, length = 50)
-    var boardTitle: String? = null,
+    var boardTitle: String,
 
     @Column(name = "board_content", length = Integer.MAX_VALUE)
     var boardContent: String? = null,
@@ -27,16 +27,17 @@ class Board(
     @Size(max = 100)
     @NotNull
     @Column(name = "versus_side_a", nullable = false, length = 100)
-    var versusSideA: String? = null,
+    var versusSideA: String,
 
     @Size(max = 100)
     @NotNull
     @Column(name = "versus_side_b", nullable = false, length = 100)
-    var versusSideB: String? = null,
+    var versusSideB: String,
 
     @Size(max = 3)
     @NotNull
     @Column(name = "versus_status", nullable = false, length = 3)
+    @ColumnDefault("001")
     var versusStatus: String? = null,
 
     @ColumnDefault("0")
@@ -47,12 +48,12 @@ class Board(
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_no", nullable = false)
-    val userNo: GalaUser? = null,
+    val userNo: GalaUser,
 
     @Size(max = 3)
     @NotNull
     @Column(name = "category_cd", nullable = false, length = 3)
-    var categoryCd: String? = null,
+    var categoryCd: String,
 
     @ColumnDefault("0")
     @Column(name = "report_count")
@@ -66,6 +67,7 @@ class Board(
     val crtDt: Instant? = null,
 
     @Column(name = "del_yn", length = 1)
+    @ColumnDefault("N")
     var delYn: String? = null
 ) {
 

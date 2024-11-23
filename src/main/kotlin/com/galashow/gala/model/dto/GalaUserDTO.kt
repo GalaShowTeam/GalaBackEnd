@@ -1,13 +1,11 @@
 package com.galashow.gala.model.dto
 
-import com.galashow.gala.model.AdminUser
-import com.galashow.gala.model.BaseUser
-import com.galashow.gala.model.GalaUser
-import jakarta.persistence.Column
-import java.time.Instant
+import com.galashow.gala.model.entity.AdminUser
+import com.galashow.gala.model.entity.BaseUser
+import com.galashow.gala.model.entity.GalaUser
 
-class GalaUserDTO(
-    val userNo: Long,
+data class GalaUserDTO(
+    val userNo: Long?,
 
     val userEmail : String,
 
@@ -17,14 +15,14 @@ class GalaUserDTO(
 
     var points : Long = 0,
 
-    val role : String = "002"
+    val role : String = "USR"
 ) {
     companion object {
         fun toDto(entity : GalaUser) : GalaUserDTO{
             val type = when(entity){
-                is AdminUser -> "001"
-                is BaseUser -> "002"
-                else -> "003"
+                is AdminUser -> "ADM"
+                is BaseUser -> "USR"
+                else -> "UNK"
             }
             return GalaUserDTO(userNo = entity.userNo,
                                 userEmail = entity.userEmail,

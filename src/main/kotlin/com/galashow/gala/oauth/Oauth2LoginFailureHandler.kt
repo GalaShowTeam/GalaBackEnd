@@ -2,7 +2,7 @@ package com.galashow.gala.oauth
 
 import com.galashow.gala.model.entity.CertList
 import com.galashow.gala.repository.CertListRepository
-import com.galashow.gala.util.Util
+import com.galashow.gala.common.util.Util
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.Logger

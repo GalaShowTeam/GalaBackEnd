@@ -2,7 +2,7 @@ spring:
   application:
     name: gala
   profiles:
-    include: database, oauth2, jwt
+    include: database, oauth2, jwt , swagger
   jackson:
     time-zone: Asia/Seoul
 server:

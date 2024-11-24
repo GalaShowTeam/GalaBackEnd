@@ -1,9 +1,12 @@
 package com.galashow.gala.model.dto
 
+import com.galashow.gala.common.dto.ContentResponse
 import com.galashow.gala.model.entity.AdminUser
 import com.galashow.gala.model.entity.BaseUser
 import com.galashow.gala.model.entity.GalaUser
+import io.swagger.v3.oas.annotations.media.Schema
 
+@Schema(name = "GalaUserDTO", description = "Gala User 응답 객체")
 data class GalaUserDTO(
     val userNo: Long?,
 
@@ -16,7 +19,7 @@ data class GalaUserDTO(
     var points : Long = 0,
 
     val role : String = "USR"
-) {
+) : ContentResponse() {
     companion object {
         fun toDto(entity : GalaUser) : GalaUserDTO{
             val type = when(entity){

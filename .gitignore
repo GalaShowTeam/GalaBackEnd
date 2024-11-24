@@ -73,3 +73,6 @@ out/
 
 ### jwt ###
 **/*-jwt.*
+
+### swagger ###
+**/*-swagger.*

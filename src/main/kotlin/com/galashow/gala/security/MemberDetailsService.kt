@@ -17,7 +17,7 @@ class MemberDetailsService(
         if(providerId.isNullOrEmpty()){
             throw IllegalArgumentException("providerId cannot be empty")
         }
-        val user = galaUserRepository.findByProviderId(providerId) ?: throw NoUserException()
+        val user = galaUserRepository.findByProviderId(providerId) ?: throw NoUserException("해댕하는 사용자가 없습니다.")
 
         return MemberDetails(user)
     }

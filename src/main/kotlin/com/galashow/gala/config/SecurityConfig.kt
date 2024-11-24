@@ -47,6 +47,8 @@ class SecurityConfig {
         httpSecurity.authorizeHttpRequests{authorize -> authorize
             .requestMatchers("/login/oauth2/**").permitAll()
             .requestMatchers(HttpMethod.GET,"/user/get").hasAnyAuthority("ADM","USR")
+            .requestMatchers("/api-document").permitAll()
+            .requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll()
             .requestMatchers("/login").permitAll()
             .requestMatchers("/favicon.ico").permitAll()
             .anyRequest().authenticated()

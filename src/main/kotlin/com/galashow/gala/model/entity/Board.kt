@@ -6,7 +6,9 @@ import jakarta.validation.constraints.Size
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.OnDelete
 import org.hibernate.annotations.OnDeleteAction
+import java.time.Duration
 import java.time.Instant
+import java.time.Instant.now
 
 @Entity
 @Table(name = "board", schema = "gala")
@@ -38,11 +40,11 @@ class Board(
     @NotNull
     @Column(name = "versus_status", nullable = false, length = 3)
     @ColumnDefault("001")
-    var versusStatus: String? = null,
+    var versusStatus: String? = "001",
 
     @ColumnDefault("0")
     @Column(name = "like_count")
-    var likeCount: Int? = null,
+    var likeCount: Int? = 0,
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -57,18 +59,18 @@ class Board(
 
     @ColumnDefault("0")
     @Column(name = "report_count")
-    var reportCount: Int? = null,
+    var reportCount: Int? = 0,
 
     @Column(name = "end_date")
-    var endDate: Instant? = null,
+    var endDate: Instant? = now().plus(Duration.ofDays(10)),
 
     @ColumnDefault("now()")
     @Column(name = "crt_dt")
-    val crtDt: Instant? = null,
+    val crtDt: Instant? = now(),
 
     @Column(name = "del_yn", length = 1)
     @ColumnDefault("N")
-    var delYn: String? = null
+    var delYn: String? = "N"
 ) {
 
 }

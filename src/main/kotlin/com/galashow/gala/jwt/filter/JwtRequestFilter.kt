@@ -2,7 +2,7 @@ package com.galashow.gala.jwt.filter
 
 import com.galashow.gala.jwt.JwtUtil
 import com.galashow.gala.security.MemberDetails
-import com.galashow.gala.util.Util
+import com.galashow.gala.common.util.Util
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.stereotype.Component
-import com.galashow.gala.util.Util
+import com.galashow.gala.common.util.Util
 import net.minidev.json.JSONObject
 
 @Component

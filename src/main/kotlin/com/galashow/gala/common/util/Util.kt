@@ -1,4 +1,4 @@
-package com.galashow.gala.util
+package com.galashow.gala.common.util
 
 import jakarta.servlet.http.HttpServletRequest
 import net.minidev.json.JSONObject

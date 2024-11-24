@@ -1,6 +1,6 @@
 package com.galashow.gala.security
 
-import com.galashow.gala.util.Util
+import com.galashow.gala.common.util.Util
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import net.minidev.json.JSONObject

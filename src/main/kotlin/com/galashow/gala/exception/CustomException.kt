@@ -1,3 +1,8 @@
 package com.galashow.gala.exception
 
-class NoUserException() : Exception("해당하는 사용자가 없습니다.")
+class NoUserException(msg : String) : Exception(msg)
+
+
+class BadArgumentException(msg : String) : Exception(msg)
+
+class AccountNotMatchingException(msg : String) : Exception(msg)

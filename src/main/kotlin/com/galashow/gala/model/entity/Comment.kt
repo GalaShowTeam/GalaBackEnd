@@ -44,7 +44,7 @@ class Comment(
 
     @Size(max = 1)
     @Column(name = "del_yn", length = 1)
-    @ColumnDefault("N")
+    @ColumnDefault("'N'")
     var delYn: String? = null,
 
     @Size(max = 3)

@@ -58,7 +58,7 @@ class Topic(
     val crtDt: Instant? = null,
 
     @Size(max = 1)
-    @ColumnDefault("N")
+    @ColumnDefault("'N'")
     @Column(name = "del_yn", length = 1)
     var delYn: String? = null
 ) {

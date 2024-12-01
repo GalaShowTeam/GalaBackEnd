@@ -39,7 +39,7 @@ class Board(
     @Size(max = 3)
     @NotNull
     @Column(name = "versus_status", nullable = false, length = 3)
-    @ColumnDefault("001")
+    @ColumnDefault("'001'")
     var versusStatus: String? = "001",
 
     @ColumnDefault("0")
@@ -69,7 +69,7 @@ class Board(
     val crtDt: Instant? = now(),
 
     @Column(name = "del_yn", length = 1)
-    @ColumnDefault("N")
+    @ColumnDefault("'N'")
     var delYn: String? = "N"
 ) {
 

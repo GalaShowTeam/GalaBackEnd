@@ -78,4 +78,9 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     ): ResponseEntity<Any> {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDTO("FAIL","잘못된 요청입니다. JSON 형식이 올바르지 않거나, 허용되지 않은 필드가 포함되어 있습니다."))
     }
+
+    @ExceptionHandler(NotFoundException::class)
+    fun noContentException(e: NotFoundException) : ResponseEntity<Any>{
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ResponseDTO("NOT_FOUND","해당하는 리소스가 없습니다."))
+    }
 }

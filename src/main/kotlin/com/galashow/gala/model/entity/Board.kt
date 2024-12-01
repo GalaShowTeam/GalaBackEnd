@@ -16,7 +16,7 @@ class Board(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_no", nullable = false)
-    val boardNo: Int? = null,
+    val boardNo: Long? = null,
 
     @Size(max = 50)
     @NotNull

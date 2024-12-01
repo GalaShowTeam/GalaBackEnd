@@ -51,6 +51,8 @@ class SecurityConfig {
             .requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll()
             .requestMatchers("/login").permitAll()
             .requestMatchers("/favicon.ico").permitAll()
+            .requestMatchers(HttpMethod.GET,"/board").permitAll()
+            .requestMatchers(HttpMethod.GET,"/board/*").permitAll()
             .anyRequest().authenticated()
 
         }

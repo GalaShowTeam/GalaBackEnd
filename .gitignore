@@ -67,6 +67,7 @@ out/
 
 ### database ###
 **/*-database.*
+*.sql
 
 ### oauth2-Token ###
 **/*-oauth2.*

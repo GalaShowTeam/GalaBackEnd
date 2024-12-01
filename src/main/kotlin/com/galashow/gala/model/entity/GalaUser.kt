@@ -3,6 +3,7 @@ package com.galashow.gala.model.entity
 import jakarta.persistence.*
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Size
+import org.apache.commons.lang3.RandomStringUtils
 import org.hibernate.annotations.ColumnDefault
 import java.time.Instant
 
@@ -25,7 +26,7 @@ abstract class GalaUser (
 
     @Size(max = 10, message = "닉네임은 10자 이상 넘을 수 없습니다.")
     @Column(name= "user_nickname",length = 10)
-    open var userNickname : String = "",
+    open var userNickname : String = RandomStringUtils.randomAlphanumeric(6,10),
 
     @Column(name = "profile_img")
     open var profileImg : String = "",

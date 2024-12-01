@@ -1,6 +1,7 @@
 package com.galashow.gala.common.dto
 
 import com.galashow.gala.controller.GalaUserRequestDTO
+import com.galashow.gala.model.dto.BoardDTO
 import com.galashow.gala.model.dto.GalaUserDTO
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.media.Schema
@@ -35,6 +36,7 @@ class ResponseDTOWithContents(
     msg: String,
     @field:Schema(anyOf = [ErrorDetails::class,
                             GalaUserDTO::class,
+                            BoardDTO::class
                             ]
     )
     val contents : Any

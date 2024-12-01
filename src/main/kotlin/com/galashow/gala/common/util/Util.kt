@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest
 import net.minidev.json.JSONObject
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.security.oauth2.core.OAuth2AuthorizationException
 
 class Util {
 
@@ -16,7 +17,7 @@ class Util {
             userAgent.contains("Mobile", ignoreCase = true) -> "MBL"
             userAgent.contains("Tablet", ignoreCase = true) -> "TBL"
             userAgent.contains("Windows", ignoreCase = true) ||userAgent.contains("Macintosh", ignoreCase = true) -> "DSK"
-            else -> "999"
+            else -> "ETC"
 
         }
     }
@@ -25,6 +26,8 @@ class Util {
           return when(ex){
               is BadCredentialsException -> "001"
               is UsernameNotFoundException -> "002"
+              is OAuth2AuthorizationException -> "003"
+
               else -> "999"
           }
       }

@@ -33,7 +33,7 @@ class BoardTopComment(
     @Column(name = "crt_dt")
     var crtDt: Instant? = null,
 
-    @ColumnDefault("N")
+    @ColumnDefault("'N'")
     @Size(max = 1)
     @Column(name = "del_yn", length = 1)
     var delYn: String? = null,

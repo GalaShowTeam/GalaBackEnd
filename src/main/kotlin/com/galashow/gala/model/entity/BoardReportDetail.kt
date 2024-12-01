@@ -45,7 +45,7 @@ class BoardReportDetail(
 
     @NotNull
     @Size(max = 1)
-    @ColumnDefault("N")
+    @ColumnDefault("'N'")
     @Column(name = "del_yn", nullable = false, length = 1)
     var delYn: String? = null
 ) {

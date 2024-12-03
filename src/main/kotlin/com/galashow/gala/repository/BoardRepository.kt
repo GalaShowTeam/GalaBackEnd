@@ -2,16 +2,17 @@ package com.galashow.gala.repository
 
 import com.galashow.gala.model.dto.BoardDTO
 import com.galashow.gala.model.entity.Board
-import com.galashow.gala.model.entity.GalaUser
 import com.galashow.gala.model.entity.QBoard
 import com.galashow.gala.model.entity.QComCdI
-import com.galashow.gala.model.entity.QComCdIId
+import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.core.types.Projections
+import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.jpa.impl.JPAQueryFactory
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Transactional
 
 @Repository
 interface BoardRepository : JpaRepository<Board,Long> , BoardRepositoryCustom{
@@ -20,7 +21,7 @@ interface BoardRepository : JpaRepository<Board,Long> , BoardRepositoryCustom{
 }
 
 interface BoardRepositoryCustom {
-    fun findAllBoardDTO() : MutableList<BoardDTO>
+    fun findAllBoardDTO(pageable:Pageable,sort: String) : Page<BoardDTO>
     fun findBoardDTOByBoardNo(boardNo : Long) : BoardDTO?
 }
 
@@ -44,25 +45,30 @@ class BoardRepositoryCustomImpl(
                 board.versusSideA,
                 board.versusSideB,
                 board.userNo.userNickname.`as`("userNickname"),
-                categoryCdI.cdNm.`as`("category"),
+                Expressions.stringTemplate("gala.fn_code_nm({0},{1})",
+                                            Expressions.constant("category"),board.categoryCd).`as`("category"),
                 board.likeCount,
-                versusStatusCdI.cdNm.`as`("versusStatus"),
+                Expressions.stringTemplate("gala.fn_code_nm({0},{1})",
+                    Expressions.constant("versusStatus"),board.versusStatus).`as`("versusStatus"),
                 board.crtDt,
                 board.endDate)
             )
             .from(board)
-            .innerJoin(categoryCdI)
-            .on(board.categoryCd.eq(categoryCdI.id.cdValue)
-                .and(categoryCdI.id.cdGroup.eq("category")))
-            .innerJoin(versusStatusCdI)
-            .on(board.versusStatus.eq(versusStatusCdI.id.cdValue)
-                .and(versusStatusCdI.id.cdGroup.eq("versusStatus")))
             .where(board.boardNo.eq(boardNo))
             .fetchOne()
     }
 
-    override fun findAllBoardDTO(): MutableList<BoardDTO> {
-        return queryFactory
+    override fun findAllBoardDTO(pageable: Pageable,sort:String): Page<BoardDTO> {
+        val orderSpecifier : OrderSpecifier<*> = when(sort){
+            "likeCount" -> board.likeCount.desc()
+            else -> board.crtDt.desc()
+        }
+        val total = queryFactory
+            .select(board.count())
+            .from(board)
+            .fetchOne() ?: 0L
+
+        val conent = queryFactory
             .select(
                 Projections.constructor(BoardDTO::class.java,
                     board.boardNo,
@@ -71,20 +77,21 @@ class BoardRepositoryCustomImpl(
                     board.versusSideA,
                     board.versusSideB,
                     board.userNo.userNickname.`as`("userNickname"),
-                    categoryCdI.cdNm.`as`("category"),
+                    Expressions.stringTemplate("gala.fn_code_nm({0},{1})",
+                        Expressions.constant("category"),board.categoryCd).`as`("category"),
                     board.likeCount,
-                    versusStatusCdI.cdNm.`as`("versusStatus"),
+                    Expressions.stringTemplate("gala.fn_code_nm({0},{1})",
+                        Expressions.constant("versusStatus"),board.versusStatus).`as`("versusStatus"),
                     board.crtDt,
                     board.endDate)
             )
             .from(board)
-            .innerJoin(categoryCdI)
-            .on(board.categoryCd.eq(categoryCdI.id.cdValue)
-                .and(categoryCdI.id.cdGroup.eq("category")))
-            .innerJoin(versusStatusCdI)
-            .on(board.versusStatus.eq(versusStatusCdI.id.cdValue)
-                .and(versusStatusCdI.id.cdGroup.eq("versusStatus")))
+            .orderBy(orderSpecifier)
+            .limit(pageable.pageSize.toLong())
+            .offset(pageable.offset)
             .fetch()
+
+        return PageImpl(conent,pageable,total)
     }
 
 }

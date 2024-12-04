@@ -5,18 +5,17 @@ import com.galashow.gala.common.dto.ErrorDetails
 import com.galashow.gala.common.dto.ResponseDTO
 import com.galashow.gala.common.dto.ResponseDTOWithContents
 import com.galashow.gala.common.util.Util
-import org.apache.coyote.Response
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
-import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
 
@@ -82,5 +81,14 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     @ExceptionHandler(NotFoundException::class)
     fun noContentException(e: NotFoundException) : ResponseEntity<Any>{
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ResponseDTO("NOT_FOUND","해당하는 리소스가 없습니다."))
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
+    fun handleMethodArgumentTypeMismatchException(e: MethodArgumentTypeMismatchException) : ResponseEntity<Any> {
+        val responseMap:MutableMap<String,String> = mutableMapOf()
+        responseMap["cause"] = e.name;
+        responseMap["providedValue"] = e.value?.toString() ?: "null"
+        responseMap["requiredType"] = e.requiredType?.simpleName?:"알 수 없음"
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseDTOWithContents("FAIL","잘못된 요청입니다. 파라미터의 형식이 올바르지 않거나, 허용되지 않는 값이 존재합니다.",responseMap))
     }
 }

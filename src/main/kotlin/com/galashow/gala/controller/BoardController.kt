@@ -9,11 +9,13 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import jakarta.validation.constraints.Size
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -57,7 +59,7 @@ class BoardController(
     )
     @GetMapping
     fun findAllBoard(
-        @RequestParam(value = "page", defaultValue = "0") page: Int,
+        @RequestParam(value = "page", defaultValue = "0")  page: Int,
         @RequestParam(value = "size", defaultValue = "10") size: Int,
         @RequestParam(value = "sort", defaultValue = "crtDt") sort: String,
     ) : ResponseEntity<Any>{

@@ -62,8 +62,13 @@ class BoardController(
         @RequestParam(value = "page", defaultValue = "0")  page: Int,
         @RequestParam(value = "size", defaultValue = "10") size: Int,
         @RequestParam(value = "sort", defaultValue = "crtDt") sort: String,
+        @RequestParam(value = "direction", defaultValue = "desc") direction: String,
+        @RequestParam(value = "writer", required = false) writer: String?,
+        @RequestParam(value = "title",required = false) title: String?,
+        @RequestParam(value = "category", required = false) category: String?,
     ) : ResponseEntity<Any>{
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseDTOWithContents("SUCCESS","성공했습니다.",boardService.findAllBoard(page,size,sort)))
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseDTOWithContents("SUCCESS","성공했습니다.",
+            boardService.findAllBoard(page,size,sort,direction,writer,title,category)))
     }
 
     @GetMapping("/{id}")

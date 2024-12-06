@@ -32,9 +32,15 @@ class BoardService(
     }
 
     @Transactional
-    fun findAllBoard(page:Int,size:Int,sort:String) : Page<BoardDTO> {
+    fun findAllBoard(page:Int,
+                     size:Int,
+                     sort:String,
+                     direction:String?,
+                     writer:String?,
+                     title:String?,
+                     category:String?) : Page<BoardDTO> {
         val pageable: Pageable  = PageRequest.of(page,size)
-        return boardRepository.findAllBoardDTO(pageable,sort)
+        return boardRepository.findAllBoardDTO(pageable,sort,direction,writer,title,category)
     }
 
     @Transactional

@@ -4,6 +4,7 @@ import com.galashow.gala.model.dto.BoardDTO
 import com.galashow.gala.model.entity.Board
 import com.galashow.gala.model.entity.QBoard
 import com.galashow.gala.model.entity.QComCdI
+import com.querydsl.core.BooleanBuilder
 import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.Expressions
@@ -21,7 +22,11 @@ interface BoardRepository : JpaRepository<Board,Long> , BoardRepositoryCustom{
 }
 
 interface BoardRepositoryCustom {
-    fun findAllBoardDTO(pageable:Pageable,sort: String) : Page<BoardDTO>
+    fun findAllBoardDTO(pageable:Pageable,sort: String,
+                        direction : String?,
+                        writer : String?,
+                        title :String?,
+                        category:String?) : Page<BoardDTO>
     fun findBoardDTOByBoardNo(boardNo : Long) : BoardDTO?
 }
 
@@ -58,14 +63,45 @@ class BoardRepositoryCustomImpl(
             .fetchOne()
     }
 
-    override fun findAllBoardDTO(pageable: Pageable,sort:String): Page<BoardDTO> {
+    override fun findAllBoardDTO(pageable: Pageable,
+                                 sort:String,
+                                 direction : String?,
+                                 writer : String?,
+                                 title :String?,
+                                 category:String?
+                                 ): Page<BoardDTO> {
+
+        val isDescending = direction?.equals("desc",ignoreCase = true) ?: false
         val orderSpecifier : OrderSpecifier<*> = when(sort){
-            "likeCount" -> board.likeCount.desc()
-            else -> board.crtDt.desc()
+            "likeCount" -> if(isDescending) board.likeCount.desc() else board.likeCount.asc()
+            else -> if(isDescending) board.crtDt.desc() else board.crtDt.asc()
         }
+
+        val builder = BooleanBuilder().apply {
+            if (!writer.isNullOrBlank()) {
+                and(board.userNo.userNickname.startsWithIgnoreCase(writer))
+            }
+            if (!title.isNullOrEmpty()) {
+                and(board.boardTitle.startsWithIgnoreCase(title))
+            }
+            if (!category.isNullOrEmpty()) {
+                val categoryCd: String? = queryFactory
+                    .select(categoryCdI.id.cdValue)
+                    .from(categoryCdI)
+                    .where(
+                        categoryCdI.cdNm.eq(category)
+                            .and(categoryCdI.id.cdGroup.eq("category"))
+                    )
+                    .fetchOne()
+                and(board.categoryCd.eq(categoryCd ?: ""))
+
+            }
+        }
+
         val total = queryFactory
             .select(board.count())
             .from(board)
+            .where(builder)
             .fetchOne() ?: 0L
 
         val conent = queryFactory
@@ -86,6 +122,7 @@ class BoardRepositoryCustomImpl(
                     board.endDate)
             )
             .from(board)
+            .where(builder)
             .orderBy(orderSpecifier)
             .limit(pageable.pageSize.toLong())
             .offset(pageable.offset)

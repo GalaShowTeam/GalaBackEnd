@@ -81,7 +81,6 @@ class BoardController(
             ApiResponse(
                 responseCode = "200",
                 description = "게시글 정보 반환 성공",
-
                 content = [
                     Content(mediaType = "application/json",
                         schema = Schema(implementation = BoardDTO::class)

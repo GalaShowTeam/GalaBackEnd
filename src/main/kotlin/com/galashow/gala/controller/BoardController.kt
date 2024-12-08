@@ -10,14 +10,11 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import jakarta.validation.constraints.Size
-import org.apache.coyote.Response
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
-import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -115,7 +112,6 @@ class BoardController(
             ?:return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("적절하지 않은 사용자입니다.")
 
         val loginGalaUser = loginUser.getGalaUser()
-
         boardService.deleteBoardByBoardNo(loginGalaUser,boardNo)
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO("SUCCESS","삭제 완료했습니다."))
     }

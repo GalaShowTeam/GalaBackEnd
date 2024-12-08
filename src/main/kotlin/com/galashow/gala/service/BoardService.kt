@@ -1,6 +1,7 @@
 package com.galashow.gala.service
 
 
+import com.galashow.gala.exception.AccountNotMatchingException
 import com.galashow.gala.exception.NotFoundException
 import com.galashow.gala.model.dto.BoardDTO
 import com.galashow.gala.model.entity.Board
@@ -46,5 +47,18 @@ class BoardService(
     @Transactional
     fun findBoardDTOByBoardNo(boardNo:Long) : BoardDTO{
         return boardRepository.findBoardDTOByBoardNo(boardNo) ?: throw NotFoundException()
+    }
+
+    @Transactional
+    fun deleteBoardByBoardNo(loginUser: GalaUser,boardNo: Long){
+        val board : Board = boardRepository.findById(boardNo).orElseThrow {
+            throw NotFoundException()
+        }
+
+        if(board.userNo.userNo == loginUser.userNo){
+            boardRepository.deleteById(boardNo)
+        }else{
+            throw AccountNotMatchingException("본인의 게시물이 아닙니다.")
+        }
     }
 }

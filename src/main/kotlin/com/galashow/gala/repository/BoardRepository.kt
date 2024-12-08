@@ -85,15 +85,14 @@ class BoardRepositoryCustomImpl(
                 and(board.boardTitle.startsWithIgnoreCase(title))
             }
             if (!category.isNullOrEmpty()) {
-                val categoryCd: String? = queryFactory
+                and(board.categoryCd.eq(queryFactory
                     .select(categoryCdI.id.cdValue)
                     .from(categoryCdI)
                     .where(
                         categoryCdI.cdNm.eq(category)
                             .and(categoryCdI.id.cdGroup.eq("category"))
                     )
-                    .fetchOne()
-                and(board.categoryCd.eq(categoryCd ?: ""))
+                    .fetchOne()?:""))
 
             }
         }

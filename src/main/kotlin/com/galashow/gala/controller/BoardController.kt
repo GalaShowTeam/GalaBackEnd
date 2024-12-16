@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*
 class BoardController(
     private val boardService: BoardService
 ) {
-    //TODO : API 문서 작성하기
+    
     private val logger:Logger = LoggerFactory.getLogger(BoardController::class.java)
 
     @GetMapping("/createDummy")
@@ -35,7 +35,7 @@ class BoardController(
         try{
             boardService.createDummy(galaUser)
             return ResponseEntity.status(HttpStatus.OK).body("생성 완료")
-        }catch (e:Exception){
+        } catch (e:Exception){
             logger.error(e.message)
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("생성 실패")
         }
@@ -114,5 +114,27 @@ class BoardController(
         val loginGalaUser = loginUser.getGalaUser()
         boardService.deleteBoardByBoardNo(loginGalaUser,boardNo)
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO("SUCCESS","삭제 완료했습니다."))
+    }
+    
+    @Operation(
+        summary = "게시글 업데이트",
+        description = "게시글 번호에 해당하는 게시글을 업데이트 한 후 업데이트된 게시글을 리턴합니다.",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "게시글 업데이트 완료",
+                content = [
+                    Content(mediaType = "application/json",
+                        schema = Schema(implementation = BoardDTO::class)
+                    )
+                ]
+            )
+        ]
+    )
+    @PutMapping("/{id}")
+    fun updateBoard(authentication: Authentication,
+                    @PathVariable("id") boardNo: Long,
+                    ){
+        //TODO: 작성 필요
     }
 }

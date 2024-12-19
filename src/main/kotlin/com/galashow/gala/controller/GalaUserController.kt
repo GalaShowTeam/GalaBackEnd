@@ -1,6 +1,5 @@
 package com.galashow.gala.controller
 
-import com.galashow.gala.common.dto.ResponseDTOWithContents
 import com.galashow.gala.exception.AccountNotMatchingException
 import com.galashow.gala.model.dto.GalaUserDTO
 import com.galashow.gala.repository.GalaUserRepository
@@ -12,8 +11,6 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import jakarta.validation.constraints.Digits
-import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -30,11 +27,37 @@ data class GalaUserRequestDTO(
     val points : Long ? = null
 )
 
+
 @RestController
 @RequestMapping("/user")
 class GalaUserController(private val galaUserRepository: GalaUserRepository,private val galaUserService: GalaUserService) {
 
     private val logger : Logger = LoggerFactory.getLogger(GalaUserController::class.java)
+
+
+    @Operation(
+        summary = "사용자 정보 조회",
+        description = "토큰을 지니고 있는 사용자의 정보를 반환합니다.",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "사용자 정보 반환 성공",
+                content = [Content(mediaType = "application/json",
+                    schema = Schema(implementation = GalaUserDTO::class),
+                    examples = [ExampleObject(name = "GalaUserDtoExample", ref = "#/components/examples/GalaUserDtoExample")])]
+            )
+        ]
+    )
+    @GetMapping("/me")
+    fun getMeUser(authentication: Authentication) :ResponseEntity<Any>{
+        val loginUser = authentication.principal as? MemberDetails
+            ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("적절하지 않은 사용자입니다.")
+
+        val loginGalaUser = loginUser.getGalaUser()
+
+        return ResponseEntity.ok(Util.createResponse(responseResult = "SUCCESS", msg = "성공했습니다.", contents = GalaUserDTO.toDto(loginGalaUser)))
+
+    }
 
     @Operation(
         summary = "사용자 정보 조회",
@@ -61,7 +84,7 @@ class GalaUserController(private val galaUserRepository: GalaUserRepository,priv
             throw AccountNotMatchingException("접근 권한이 없습니다.")
         }
 
-        return ResponseEntity.ok(ResponseDTOWithContents(result = "SUCCESS", msg = "성공했습니다.", contents = GalaUserDTO.toDto(loginGalaUser)))
+        return ResponseEntity.ok(Util.createResponse(responseResult = "SUCCESS", msg = "성공했습니다.", contents = GalaUserDTO.toDto(loginGalaUser)))
     }
 
     @Operation(

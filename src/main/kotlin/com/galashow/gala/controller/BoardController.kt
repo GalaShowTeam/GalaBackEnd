@@ -3,6 +3,7 @@ package com.galashow.gala.controller
 
 import com.galashow.gala.common.dto.ResponseDTO
 import com.galashow.gala.common.dto.ResponseDTOWithContents
+import com.galashow.gala.common.util.Util
 import com.galashow.gala.model.dto.BoardDTO
 import com.galashow.gala.security.MemberDetails
 import com.galashow.gala.service.BoardService
@@ -67,7 +68,7 @@ class BoardController(
         @RequestParam(value = "title",required = false) title: String?,
         @RequestParam(value = "category", required = false) category: String?,
     ) : ResponseEntity<Any>{
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseDTOWithContents("SUCCESS","성공했습니다.",
+        return ResponseEntity.status(HttpStatus.OK).body(Util.createResponse("SUCCESS","성공했습니다.",
             boardService.findAllBoard(page,size,sort,direction,writer,title,category)))
     }
 
@@ -88,7 +89,7 @@ class BoardController(
     )
     @GetMapping("/{id}")
     fun findBoardByBoardNo(@PathVariable("id") boardNo:Long) : ResponseEntity<Any>{
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseDTOWithContents("SUCCESS","성공했습니다.",boardService.findBoardDTOByBoardNo(boardNo)))
+        return ResponseEntity.status(HttpStatus.OK).body(Util.createResponse("SUCCESS","성공했습니다.",boardService.findBoardDTOByBoardNo(boardNo)))
     }
 
     @Operation(
@@ -113,7 +114,7 @@ class BoardController(
 
         val loginGalaUser = loginUser.getGalaUser()
         boardService.deleteBoardByBoardNo(loginGalaUser,boardNo)
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO("SUCCESS","삭제 완료했습니다."))
+        return ResponseEntity.status(HttpStatus.OK).body(Util.createResponse("SUCCESS","삭제 완료했습니다."))
     }
     
     @Operation(

@@ -37,10 +37,10 @@ class Util {
                                                                 put("MSG",msg)})
       }
 
-      fun createResponse(responseResult: String,msg:String, mapObjects : Any):JSONObject{
+      fun createResponse(responseResult: String, msg:String, contents : Any):JSONObject{
           return JSONObject(LinkedHashMap<String,Any>().apply { put("RESULT",responseResult)
                                                                 put("MSG",msg)
-                                                                put("contents",mapObjects)})
+                                                                put("contents",contents)})
       }
   }
 }
